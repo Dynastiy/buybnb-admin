@@ -146,7 +146,7 @@ export default {
     async getDeposits(page=1) {
       this.loading = true;
       try {
-        let res = await this.$axios.get(`/admin/get-deposits?page=${page}&?status=pending`);
+        let res = await this.$axios.get(`/admin/get-deposits?page=${page}&status=pending`);
         console.log(res.data);
         this.deposits = res.data;
       } catch (error) {

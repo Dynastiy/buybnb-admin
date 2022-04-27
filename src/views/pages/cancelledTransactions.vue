@@ -62,7 +62,7 @@ export default {
         async getDeposits(page=1){
             this.loading = true;
             try {
-                let res = await this.$axios.get(`/admin/get-deposits?page=${page}&?status=canceled`)
+                let res = await this.$axios.get(`/admin/get-deposits?page=${page}&status=canceled`)
             console.log(res.data);
             this.deposits = res.data
             } catch (error) {
