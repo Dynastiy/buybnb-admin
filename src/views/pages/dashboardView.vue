@@ -55,8 +55,8 @@
                                     <td> {{ deposit.wallet_address }} </td>
                                     <td>&#8358;{{ nairaFilter(deposit.amount_naira) }} </td>
                                     <td>{{ deposit.amount_bnb }}BNB</td>
-                                    <td> <a target="_blank" :href=" 'https://api.buybnb.io/' + deposit.payment_proof ">{{ deposit.payment_proof }} </a> </td>
-                                    <td v-if="deposit.payment_report"> <a target="_blank" :href=" 'https://api.buybnb.io/' + deposit.payment_report.credit_proof ">{{ deposit.payment_report.credit_proof }} </a> </td>
+                                    <td> <a target="_blank" :href=" 'https://api.buybnb.io/' + deposit.payment_proof ">View Deposit Proof </a> </td>
+                                    <td v-if="deposit.payment_report"> <a target="_blank" :href=" 'https://api.buybnb.io/' + deposit.payment_report.credit_proof ">View Credit Proof </a> </td>
                                     <!-- <td> <span :class="[deposit.status]"> {{ deposit.status }} </span> </td> -->
                                     <!-- <td><button class="view--more" @click="creditUser()">Credit</button></td> -->
                                 </tr>

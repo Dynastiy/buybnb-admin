@@ -32,7 +32,7 @@
                                     <td> {{ deposit.wallet_address }} </td>
                                     <td>&#8358;{{ nairaFilter(deposit.amount_naira) }} </td>
                                     <td>{{ deposit.amount_bnb }}BNB</td>
-                                    <td> <a target="_blank" :href=" 'https://api.buybnb.io/' + deposit.payment_proof "> {{ deposit.payment_proof }} </a> </td>
+                                    <td> <a target="_blank" :href=" 'https://api.buybnb.io/' + deposit.payment_proof "> View Proof </a> </td>
                                     <td> <span :class="[deposit.status]"> {{ deposit.status }} </span> </td>
                                     <td><button class="view--more" v-if="deposit.status === 'pending' " @click="creditUser(deposit)">Credit</button>
                                     <button class="view--more--disabled" disabled v-else>Done</button>
@@ -41,6 +41,10 @@
                                 <tr v-show="deposits.total === 0 " class="text-danger">Nothing Here . . .</tr>
                                 </tbody>
                             </table>
+                        </div>
+
+                        <div>
+                          <pagination :meta="deposits" @next="getDeposits"/>
                         </div>
                 </div>
 
@@ -89,8 +93,12 @@
 
 
 <script>
+import pagination from '@/components/appPagination.vue'
  import { nairaFilter, percentFilter, percentageFilter, timeStamp } from '@/plugins/filter.js'
 export default {
+  components:{
+    pagination
+  },
     data(){
         return {
             nairaFilter, percentFilter, percentageFilter, timeStamp,
@@ -115,10 +123,10 @@ export default {
         preview.style.display = "block";
       }
     },
-        async getDeposits(){
+        async getDeposits(page = 1){
             this.loading = true;
             try {
-                let res = await this.$axios.get('/admin/get-deposits')
+                let res = await this.$axios.get(`/admin/get-deposits/?page=${page}`)
             console.log(res.data);
             this.deposits = res.data
             } catch (error) {

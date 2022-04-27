@@ -59,6 +59,10 @@
             </tbody>
           </table>
         </div>
+
+        <div>
+          <pagination :meta="users" @next="getUsers"/>
+        </div>
       </div>
     </section>
 
@@ -79,6 +83,7 @@
 </template>
 
 <script>
+import pagination from '@/components/appPagination.vue'
 import {
   nairaFilter,
   percentFilter,
@@ -86,6 +91,9 @@ import {
   timeStamp,
 } from "@/plugins/filter.js";
 export default {
+  components:{
+    pagination
+  },
   data() {
     return {
       nairaFilter,
@@ -101,10 +109,10 @@ export default {
     };
   },
   methods: {
-    async getUsers() {
+    async getUsers(page = 1) {
       this.loading = true;
       try {
-        let res = await this.$axios.get("/admin/get-users");
+        let res = await this.$axios.get(`/admin/get-users/?page=${page}`)
         console.log(res.data);
         this.users = res.data;
       } catch (error) {

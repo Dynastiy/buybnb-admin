@@ -27,14 +27,17 @@
                                     <td> {{ deposit.wallet_address }} </td>
                                     <td>&#8358;{{ nairaFilter(deposit.amount_naira) }} </td>
                                     <td>{{ deposit.amount_bnb }}BNB</td>
-                                    <td> <a target="_blank" :href=" 'https://api.buybnb.io/' + deposit.payment_proof "> {{ deposit.payment_proof }} </a> </td>
+                                    <td> <a target="_blank" :href=" 'https://api.buybnb.io/' + deposit.payment_proof "> View Deposit Proof  </a> </td>
                                     <!-- <td> <span :class="[deposit.status]"> {{ deposit.status }} </span> </td> -->
-                                    <td v-if="deposit.payment_report"> <a target="_blank" :href=" 'https://api.buybnb.io/' + deposit.payment_report.credit_proof ">{{ deposit.payment_report.credit_proof }} </a> </td>
+                                    <td v-if="deposit.payment_report"> <a target="_blank" :href=" 'https://api.buybnb.io/' + deposit.payment_report.credit_proof "> View Credit Proof</a> </td>
                                     
                                 </tr>
                                 <tr v-show="deposits.total === 0 " class="text-danger">Nothing Here . . .</tr>
                                 </tbody>
                             </table>
+                        </div>
+                 <div>
+                          <pagination :meta="deposits" @next="getDeposits"/>
                         </div>
                 </div>
     </div>
@@ -43,7 +46,11 @@
 
 <script>
  import { nairaFilter, percentFilter, percentageFilter, timeStamp } from '@/plugins/filter.js'
+ import pagination from '@/components/appPagination.vue'
 export default {
+    components:{
+        pagination
+    },
     data(){
         return {
             nairaFilter, percentFilter, percentageFilter, timeStamp,
@@ -52,10 +59,10 @@ export default {
         }
     },
     methods: {
-        async getDeposits(){
+        async getDeposits(page=1){
             this.loading = true;
             try {
-                let res = await this.$axios.get('/admin/get-deposits?status=completed')
+                let res = await this.$axios.get(`/admin/get-deposits?page=${page}&status=completed`)
             console.log(res.data);
             this.deposits = res.data
             } catch (error) {

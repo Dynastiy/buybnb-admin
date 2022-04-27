@@ -31,7 +31,7 @@
                   target="_blank"
                   :href="'https://api.buybnb.io/' + deposit.payment_proof"
                 >
-                  {{ deposit.payment_proof }}
+                 View Proof
                 </a>
               </td>
               <td>
@@ -56,6 +56,10 @@
           </tbody>
         </table>
       </div>
+
+       <div>
+                          <pagination :meta="deposits" @next="getDeposits"/>
+                        </div>
     </div>
 
     <!-- Modal to Credit User -->
@@ -107,8 +111,12 @@ import {
   percentFilter,
   percentageFilter,
   timeStamp,
-} from "@/plugins/filter.js";
+} from "@/plugins/filter.js"; 
+import pagination from '@/components/appPagination.vue'
 export default {
+    components:{
+        pagination
+    },
   data() {
     return {
       nairaFilter,
@@ -135,10 +143,10 @@ export default {
         preview.style.display = "block";
       }
     },
-    async getDeposits() {
+    async getDeposits(page=1) {
       this.loading = true;
       try {
-        let res = await this.$axios.get("/admin/get-deposits?status=pending");
+        let res = await this.$axios.get(`/admin/get-deposits?page=${page}&?status=pending`);
         console.log(res.data);
         this.deposits = res.data;
       } catch (error) {

@@ -26,7 +26,7 @@
                                     <td> {{ deposit.wallet_address }} </td>
                                     <td>&#8358;{{ nairaFilter(deposit.amount_naira) }} </td>
                                     <td>{{ deposit.amount_bnb }}BNB</td>
-                                    <td> <a target="_blank" :href=" 'https://api.buybnb.io/' + deposit.payment_proof "> {{ deposit.payment_proof }} </a> </td>
+                                    <td> <a target="_blank" :href=" 'https://api.buybnb.io/' + deposit.payment_proof "> View Proof </a> </td>
                                     <td> <span :class="[deposit.status]"> {{ deposit.status }} </span> </td>
                                     <!-- <td><button class="view--more" v-if="deposit.status === 'pending' ">Pay</button>
                                     <button class="view--more--disabled" disabled v-else>Done</button>
@@ -36,6 +36,9 @@
                                 </tbody>
                             </table>
                         </div>
+                         <div>
+                          <pagination :meta="deposits" @next="getDeposits"/>
+                        </div>
                 </div>
     </div>
 </template>
@@ -43,7 +46,11 @@
 
 <script>
  import { nairaFilter, percentFilter, percentageFilter, timeStamp } from '@/plugins/filter.js'
+ import pagination from '@/components/appPagination.vue'
 export default {
+    components:{
+        pagination
+    },
     data(){
         return {
             nairaFilter, percentFilter, percentageFilter, timeStamp,
@@ -52,10 +59,10 @@ export default {
         }
     },
     methods: {
-        async getDeposits(){
+        async getDeposits(page=1){
             this.loading = true;
             try {
-                let res = await this.$axios.get('/admin/get-deposits?status=canceled')
+                let res = await this.$axios.get(`/admin/get-deposits?page=${page}&?status=canceled`)
             console.log(res.data);
             this.deposits = res.data
             } catch (error) {
