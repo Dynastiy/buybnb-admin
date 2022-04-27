@@ -14,6 +14,7 @@
                                 <tr>
                                     <th scope="col">Reference</th>
                                     <th scope="col">Date</th>
+                                    <th scope="col">Wallet Address </th>
                                     <th scope="col">Amount (NGN)</th>
                                     <th scope="col">Amount (BNB)</th>
                                     <th scope="col">Payment Proof</th>
@@ -28,6 +29,7 @@
                                 <tr v-for="deposit in deposits.data" :key="deposit.id" v-else>
                                      <td> {{ deposit.ref_no }} </td>
                                     <td>{{ timeStamp(deposit.created_at) }} </td>
+                                    <td> {{ deposit.wallet_address }} </td>
                                     <td>&#8358;{{ nairaFilter(deposit.amount_naira) }} </td>
                                     <td>{{ deposit.amount_bnb }}BNB</td>
                                     <td> <a target="_blank" :href=" 'https://api.buybnb.io/' + deposit.payment_proof "> {{ deposit.payment_proof }} </a> </td>
