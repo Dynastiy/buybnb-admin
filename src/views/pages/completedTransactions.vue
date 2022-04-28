@@ -6,7 +6,7 @@
                             <table class="table table-centered table-nowrap mb-0">
                                 <thead>
                                 <tr>
-                                    <th scope="col">Reference</th>
+                                    <th scope="col">Id</th>
                                     <th scope="col">Date</th>
                                     <th scope="col">Wallet Address </th>
                                     <th scope="col">Amount (NGN)</th>
@@ -21,8 +21,8 @@
                                 
                                 
                                 <tr v-if="loading">Fetching Data . . .</tr>
-                                <tr v-for="deposit in deposits.data" :key="deposit.id" v-else>
-                                     <td> {{ deposit.ref_no }} </td>
+                                 <tr v-for="(deposit, index) in deposits.data" :key="index" v-else>
+                                     <td> {{ index + 1 }} </td>
                                     <td>{{ timeStamp(deposit.created_at) }} </td>
                                     <td> {{ deposit.wallet_address }} </td>
                                     <td>&#8358;{{ nairaFilter(deposit.amount_naira) }} </td>

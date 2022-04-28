@@ -29,8 +29,9 @@
               <tr v-if="loading">
                 Fetching Data . . .
               </tr>
-              <tr v-for="user in users.data" :key="user.id" v-else>
-                <td>{{ user.id }}</td>
+              <tr v-for="(user, index) in users.data" :key="index" v-else>
+                <td> {{ index + 1 }} </td>
+                <!-- <td>{{ user.id }}</td> -->
                 <td class="text-capitalize">{{ user.name }}</td>
                 <td>{{ user.email }}</td>
                 <td>

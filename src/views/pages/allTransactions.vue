@@ -12,7 +12,7 @@
                             <table class="table table-centered table-nowrap mb-0">
                                 <thead>
                                 <tr>
-                                    <th scope="col">Reference</th>
+                                    <th scope="col">Id</th>
                                     <th scope="col">Date</th>
                                     <th scope="col">Wallet Address </th>
                                     <th scope="col">Amount (NGN)</th>
@@ -26,16 +26,20 @@
                                 
                                 
                                 <tr v-if="loading">Fetching Data . . .</tr>
-                                <tr v-for="deposit in deposits.data" :key="deposit.id" v-else>
-                                     <td> {{ deposit.ref_no }} </td>
+                                <tr v-for="(deposit, index) in deposits.data" :key="index" v-else>
+                                     <td> {{ index + 1 }} </td>
                                     <td>{{ timeStamp(deposit.created_at) }} </td>
                                     <td> {{ deposit.wallet_address }} </td>
                                     <td>&#8358;{{ nairaFilter(deposit.amount_naira) }} </td>
                                     <td>{{ deposit.amount_bnb }}BNB</td>
                                     <td> <a target="_blank" :href=" 'https://api.buybnb.io/' + deposit.payment_proof "> View Proof </a> </td>
                                     <td> <span :class="[deposit.status]"> {{ deposit.status }} </span> </td>
-                                    <td><button class="view--more" v-if="deposit.status === 'pending' " @click="creditUser(deposit)">Credit</button>
-                                    <button class="view--more--disabled" disabled v-else>Done</button>
+                                    <td><button class="view--more--disabled" disabled v-if="deposit.status !== 'pending' ">Done</button>
+                                     <div v-else>
+                                        <button class="view--more mr-2" @click="creditUser(deposit)">Credit</button>
+                                        <button class="view--more bg-danger border-danger" @click="cancelDeposit(deposit)">Cancel</button>
+                                     </div>
+                                    
                                     </td>
                                 </tr>
                                 <tr v-show="deposits.total === 0 " class="text-danger">Nothing Here . . .</tr>
@@ -139,6 +143,17 @@ export default {
         let formData = new FormData();
           formData.append("status", "completed");
           let res = await this.$axios.post('/admin/update-deposit-status/'+this.id, formData)
+          console.log(res);
+          this.getDeposits();
+        } catch (error) {
+          console.log(error);
+        }
+    },
+    async cancelDeposit(deposit){
+      try {
+        let formData = new FormData();
+          formData.append("status", "canceled");
+          let res = await this.$axios.post('/admin/update-deposit-status/'+deposit.id, formData)
           console.log(res);
           this.getDeposits();
         } catch (error) {

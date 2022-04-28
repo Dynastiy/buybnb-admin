@@ -377,7 +377,7 @@ br {
     color: var(--gray-800);
 }
 
-.cancelled {
+.canceled {
     background-color: rgb(255, 198, 198);
     color: red;
     padding: 0.2rem 0.5rem;
